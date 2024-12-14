@@ -128,6 +128,23 @@ document.getElementById("regionSearch").addEventListener("click", async () => {
     const geoJSON = await fetchRegionGeoJSON(longitude, latitude, token);
     if (geoJSON) {
       displayPolygonOnMap(geoJSON);
+
+      const regionProperties = geoJSON.features[0]?.properties;
+      if (regionProperties) {
+        // Save longitude, latitude, and properties to localStorage
+        localStorage.setItem("longitude", longitude);
+        localStorage.setItem("latitude", latitude);
+        localStorage.setItem("district", regionProperties.district || "N/A");
+        localStorage.setItem("province", regionProperties.province || "N/A");
+        localStorage.setItem(
+          "sub_district",
+          regionProperties.sub_district || "N/A"
+        );
+        localStorage.setItem("village", regionProperties.village || "N/A");
+
+        // Update UI with stored data
+        updateRegionInfo();
+      }
     } else {
       Swal.fire({
         title: "Fetch Failed",
@@ -140,6 +157,24 @@ document.getElementById("regionSearch").addEventListener("click", async () => {
     console.error("Error fetching region:", error);
   }
 });
+
+function updateRegionInfo() {
+  // Retrieve data from localStorage
+  const longitude = localStorage.getItem("longitude");
+  const latitude = localStorage.getItem("latitude");
+  const district = localStorage.getItem("district");
+  const province = localStorage.getItem("province");
+  const subDistrict = localStorage.getItem("sub_district");
+  const village = localStorage.getItem("village");
+
+  // Update the HTML elements with the retrieved data
+  document.getElementById("longitude").textContent = longitude;
+  document.getElementById("latitude").textContent = latitude;
+  document.getElementById("district").textContent = district;
+  document.getElementById("province").textContent = province;
+  document.getElementById("sub-district").textContent = subDistrict;
+  document.getElementById("village").textContent = village;
+}
 
 // Function to fetch roads
 async function fetchRoads(longitude, latitude, maxDistance, token) {
