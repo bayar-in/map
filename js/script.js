@@ -5,7 +5,7 @@ document.getElementById("toggle-btn").addEventListener("click", function () {
   if (toggleContent.classList.contains("hidden")) {
     toggleContent.classList.remove("hidden");
     toggleContent.classList.add("visible");
-    this.textContent = "Hidde"; // Ubah teks tombol
+    this.textContent = "Hide"; // Ubah teks tombol
   } else {
     toggleContent.classList.remove("visible");
     toggleContent.classList.add("hidden");
